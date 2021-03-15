@@ -9,7 +9,7 @@ $ git clone https://github.com/HowardCHT/CJMCU-8128_RaspberryPi.git
 $ cd CJMCU-8128_RaspberryPi
 $ python3 -m venv .venv
 $ pip install -r requirements.txt
-$ python sersor_app.py
+$ python sensor_app.py
 ```
 Set ..\lib\python3.7\site-packages\adafruit_bme280.py
 ```
