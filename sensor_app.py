@@ -64,6 +64,7 @@ class CJMCU8128:
                 time.sleep(3)
 
     def run_hdc1080(self):
+        print(" ==== run_hdc1080 ====")
         while self.hdc1080_flg:
             try:
                 self.__data["Temperature_HDC1080"] = self.hdc1080.readTemperature()
@@ -79,7 +80,7 @@ class CJMCU8128:
         t_ccs = threading.Thread(target=self.run_ccs)
         t_ccs.start()
 
-        self.run_bme280 = True
+        self.bme280_flg = True
         t_bme280 = threading.Thread(target=self.run_bme280)
         t_bme280.start()
 
@@ -101,6 +102,7 @@ if __name__ == "__main__":
     c_sensor = CJMCU8128()
     c_sensor.start()
 
+    # ===================================
     while True:
         try:
             print(c_sensor.get_data)
