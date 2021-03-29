@@ -1,12 +1,13 @@
 import busio
 import adafruit_ccs811
-import board 
+import board
 import time
 import threading
-
 import adafruit_bme280
-
 import SDL_Pi_HDC1080
+from flask import Flask, jsonify
+
+app = Flask(__name__)
 
 
 class CJMCU8128:
@@ -28,13 +29,13 @@ class CJMCU8128:
             "CO2": None,
             "TVOC": None,
             # bme280
-            "Temperature":None,
-            "RelativeHumidity":None,
-            "Pressure":None,
-            "Altitude":None,
+            "Temperature": None,
+            "RelativeHumidity": None,
+            "Pressure": None,
+            "Altitude": None,
             # hdc1080
             "Temperature_HDC1080": None,
-            "Humidity_HDC1080":None
+            "Humidity_HDC1080": None
         }
 
     def run_ccs(self):
@@ -90,7 +91,7 @@ class CJMCU8128:
 
     def stop(self):
         self.ccs_flg = False
-        self.run_bme280 = False
+        self.bme280_flg = False
         self.hdc1080_flg = False
 
     @property
@@ -98,14 +99,25 @@ class CJMCU8128:
         return self.__data
 
 
+c_sensor = CJMCU8128()
+
+
+@app.route("/getdata", methods=['GET'])
+def getdata():
+    return jsonify(c_sensor.get_data)
+
+
 if __name__ == "__main__":
-    c_sensor = CJMCU8128()
     c_sensor.start()
 
-    # ===================================
-    while True:
-        try:
-            print(c_sensor.get_data)
-        except KeyboardInterrupt:
-            break
-        time.sleep(1)
+    app.run(host="0.0.0.0", port=3000, debug=False)
+    # while True:
+    #     try:
+    #         print(c_sensor.get_data)
+    #     except KeyboardInterrupt:
+    #         break
+    #     except Exception as identifier:
+    #         print(f"Exception => {identifier}")
+    #     time.sleep(1)
+
+    c_sensor.stop()

@@ -1,0 +1,11 @@
+[Unit]
+Description=CJMCU-8128 sensor service
+
+
+[Service]
+Type=simple
+ExecStart=/home/pi/Desktop/Env_parameter/.venv/bin/python /home/pi/Desktop/Env_parameter/sensor_app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
